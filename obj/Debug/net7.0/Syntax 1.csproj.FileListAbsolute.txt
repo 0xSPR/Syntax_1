@@ -1,0 +1,14 @@
+/home/northstar/Documents/Fleet/LYA/Syntax 1/bin/Debug/net7.0/Syntax 1
+/home/northstar/Documents/Fleet/LYA/Syntax 1/bin/Debug/net7.0/Syntax 1.deps.json
+/home/northstar/Documents/Fleet/LYA/Syntax 1/bin/Debug/net7.0/Syntax 1.runtimeconfig.json
+/home/northstar/Documents/Fleet/LYA/Syntax 1/bin/Debug/net7.0/Syntax 1.dll
+/home/northstar/Documents/Fleet/LYA/Syntax 1/bin/Debug/net7.0/Syntax 1.pdb
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.GeneratedMSBuildEditorConfig.editorconfig
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.AssemblyInfoInputs.cache
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.AssemblyInfo.cs
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.csproj.CoreCompileInputs.cache
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.dll
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/refint/Syntax 1.dll
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.pdb
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/Syntax 1.genruntimeconfig.cache
+/home/northstar/Documents/Fleet/LYA/Syntax 1/obj/Debug/net7.0/ref/Syntax 1.dll

@@ -1,0 +1,4 @@
+﻿namespace Syntax_1
+{
+    
+}
