@@ -1,5 +1,16 @@
 namespace Syntax_1;
 
+/*
+    Requerimiento 1: Printf -> printf(cadena(, Identificador)?);
+    Requerimiento 2: Scanf -> scanf(cadena,&Identificador);
+    Requerimiento 3: Agregar a la Asignacion +=, -=, *=. /=, %=
+                     Ejemplo:
+                     Identificador IncrementoTermino Expresion;
+                     Identificador IncrementoFactor Expresion;
+    Requerimiento 4: Agregar el else optativo al if
+    Requerimiento 5: Indicar el número de linea de los errores
+*/
+
 public class Language : Syntax
 {
     public Language()
@@ -48,8 +59,8 @@ public class Language : Syntax
 
             Match(Types.DataTypes);
             ListIdentifier();
-
             if (GetContent() == "=")
+
             {
                 Match("=");
 
@@ -85,6 +96,7 @@ public class Language : Syntax
             Match("void");
             Match("main");
             Parameters();
+            InstructionBlock();
         }
     }
 
@@ -103,11 +115,10 @@ public class Language : Syntax
     public void Parameters()
     {
         Match("(");
-        if (GetClassification() == Types.DataTypes)
+        if(GetContent() != ")")
         {
-            //Variable();
+            //variables
         }
-
         Match(")");
     }
 
@@ -115,34 +126,26 @@ public class Language : Syntax
     public void InstructionBlock()
     {
         Match("{");
-
-        Match("}");
-    }
-
-    //bloqueInstrucciones -> { listaIntrucciones? }
-    private void bloqueInstrucciones()
-    {
-        Match("{");
         if (GetContent() != "}")
         {
-            ListaInstrucciones();
+            InstructionList();
         }
 
         Match("}");
     }
 
-    //ListaInstrucciones -> Instruccion ListaInstrucciones?
-    private void ListaInstrucciones()
+    // ListaInstrucciones -> Instruccion ListaInstrucciones?
+    private void InstructionList()
     {
-        Instruccion();
+        Instructions();
         if (GetContent() != "}")
         {
-            ListaInstrucciones();
+            InstructionList();
         }
     }
 
     //Instruccion -> Printf | Scanf | If | While | do while | For | Asignacion
-    private void Instruccion()
+    private void Instructions()
     {
         if (GetContent() == "printf")
         {
@@ -201,46 +204,83 @@ public class Language : Syntax
     //While -> while(Condicion) bloque de instrucciones | instruccion
     private void While()
     {
+        Match("while");
+        Parameters();
+        InstructionBlock();
     }
 
     //Do -> do bloque de instrucciones | intruccion while(Condicion)
     private void Do()
     {
+        Match("do");
+        InstructionBlock();
+        Match("while");
+        Parameters();
+        Match(";");
     }
 
-    //For -> for(Asignacion Condicion; Incremento) Bloque de instruccones | Intruccion 
+    //Testing - For -> for(Asignacion Condicion; Incremento) Bloque de instruccones | Intruccion
     private void For()
     {
+        Match("for");
+        Match("(");
+        // Under Test
+        if(GetClassification() == Types.DataTypes)
+        {
+            Variable();
+        }
+        else
+        {
+            Match(Types.Identifier);
+            Match("=");
+            Match(Types.Number);
+        }
+        Match(";");
+        Condition();
+        Match(";");
+        Increase();
+        Match(")");
+        InstructionBlock();
     }
+    // foreach?
 
     //Incremento -> Identificador ++ | --
     private void Increase()
     {
+        if(GetClassification() == Types.Identifier)
+        {
+            Match(Types.Identifier);
+            Match(Types.IncreaseTerm);
+        }
+        else
+        {
+            Match(Types.IncreaseTerm);
+            Match(Types.Identifier);
+        }
     }
 
     //Condicion -> Expresion operador relacional Expresion
     private void Condition()
     {
+        Match(GetClassification() == Types.Identifier ? Types.Identifier : Types.Number);
+        Match(Types.RelationalOp);
+        Match(GetClassification() == Types.Identifier ? Types.Identifier : Types.Number);
     }
 
     //If -> if(Condicion) bloque de instrucciones (else bloque de instrucciones)?
     private void If()
     {
-    }
-
-    //Printf -> printf(cadena);
-    private void PrintF(string sstring)
-    {
-    }
-
-    //Scanf -> scanf(cadena);
-    private void ScanF(string sstring)
-    {
+        Match("if");
+        Match("(");
+        Condition();
+        Match(")");
+        InstructionBlock();
     }
 
     //Expresion -> Termino MasTermino
     private void Expression()
     {
+
     }
 
     //MasTermino -> (OperadorTermino Termino)?

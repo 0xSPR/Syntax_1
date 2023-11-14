@@ -4,6 +4,7 @@ public class Lexic : Token, IDisposable
 {
     const int F = -1;
     const int E = -2;
+    int linea;
     private readonly StreamReader _file;
     protected StreamWriter Log;
 
@@ -53,6 +54,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader("test.cpp");
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
+        linea = 1;
     }
 
     public Lexic(string name)
@@ -60,6 +62,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader(name);
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
+        linea = 1;
     }
 
     public void Dispose()
@@ -137,7 +140,7 @@ public class Lexic : Token, IDisposable
             case 17: SetClassification(Types.RelationalOp);break;
             case 19: SetClassification(Types.TermOp);break;
             case 20: SetClassification(Types.TermOp);break;
-            case 21: SetClassification(Types.IncrementoTermino);break;
+            case 21: SetClassification(Types.IncreaseTerm);break;
             case 22: SetClassification(Types.FactorOp);break;
             case 23: SetClassification(Types.FactorIn);break;
             case 24: SetClassification(Types.TernaryOp);break;

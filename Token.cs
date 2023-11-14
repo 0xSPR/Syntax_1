@@ -5,7 +5,7 @@ public class Token
     public enum Types
     {
         Identifier, Number, Character, Assignment, EndSentence, LogicalOp,
-        RelationalOp, TermOp, IncrementoTermino, FactorOp, FactorIn, TernaryOp,
+        RelationalOp, TermOp, IncreaseTerm, FactorOp, FactorIn, TernaryOp,
         String, Start, End, DataTypes, Reserved, Loops, Structures
     }
     private string _content;
