@@ -1,13 +1,13 @@
 namespace Syntax_1;
 
 /*
-    Requerimiento 1: Printf -> printf(cadena(, Identificador)?);
-    Requerimiento 2: Scanf -> scanf(cadena,&Identificador);
+    Done: Printf -> printf(cadena(, Identificador)?);
+    Done: Scanf -> scanf(cadena,&Identificador);
     Requerimiento 3: Agregar a la Asignacion +=, -=, *=. /=, %=
                      Ejemplo:
                      Identificador IncrementoTermino Expresion;
                      Identificador IncrementoFactor Expresion;
-    Requerimiento 4: Agregar el else optativo al if
+    Done: Agregar el else optativo al if
     Requerimiento 5: Indicar el número de linea de los errores
 */
 
@@ -21,7 +21,7 @@ public class Language : Syntax
     {
     }
 
-    //Programa  -> Librerias? Variables? Main
+    //Programa  -> Librerias? Variables? Mai
     public void Program()
     {
         Library();
@@ -58,7 +58,16 @@ public class Language : Syntax
             string type = GetContent();
 
             Match(Types.DataTypes);
-            ListIdentifier();
+            Match(Types.Identifier);
+
+            if(GetContent() == ",")
+            {
+                while (GetClassification() == Types.Identifier || GetContent() == ",")
+                {
+                    Match(",");
+                    Match(Types.Identifier);
+                }
+            }
             if (GetContent() == "=")
 
             {
@@ -81,7 +90,6 @@ public class Language : Syntax
                         break;
                 }
             }
-
             Match(";");
 
             Variable();
@@ -100,7 +108,7 @@ public class Language : Syntax
         }
     }
 
-    //Lista_identificadores -> identificador (,Lista_identificadores)?
+    //Delete - Lista_identificadores -> identificador (,Lista_identificadores)?
     private void ListIdentifier()
     {
         Match(Types.Identifier);
@@ -115,9 +123,17 @@ public class Language : Syntax
     public void Parameters()
     {
         Match("(");
-        if(GetContent() != ")")
+        if(GetClassification() == Types.DataTypes)
         {
-            //variables
+            Match(Types.DataTypes);
+            Match(Types.Identifier);
+
+            while (GetContent() == ",")
+            {
+                Match(",");
+                Match(Types.DataTypes);
+                Match(Types.Identifier);
+            }
         }
         Match(")");
     }
@@ -183,6 +199,7 @@ public class Language : Syntax
         Match("printf");
         Match("(");
         Match(Types.String);
+        Concatenation();
         Match(")");
         Match(";");
     }
@@ -193,10 +210,19 @@ public class Language : Syntax
         Match("scanf");
         Match("(");
         Match(Types.String);
+        Concatenation();
         Match(")");
         Match(";");
     }
-
+    // Concatenation
+    private void Concatenation()
+    {
+        if(GetContent() == ",")
+        {
+            Match(",");
+            Match(Types.Identifier);
+        }
+    }
     private void Assignment()
     {
     }
@@ -205,7 +231,9 @@ public class Language : Syntax
     private void While()
     {
         Match("while");
-        Parameters();
+        Match("(");
+        Condition();
+        Match(")");
         InstructionBlock();
     }
 
@@ -215,7 +243,9 @@ public class Language : Syntax
         Match("do");
         InstructionBlock();
         Match("while");
-        Parameters();
+        Match("(");
+        Condition();
+        Match(")");
         Match(";");
     }
 
@@ -275,6 +305,18 @@ public class Language : Syntax
         Condition();
         Match(")");
         InstructionBlock();
+        if(GetContent() == "else")
+        {
+            Match("else");
+            if(GetContent() == "if")
+            {
+                If();
+            }
+            else
+            {
+                InstructionBlock();
+            }
+        }
     }
 
     //Expresion -> Termino MasTermino

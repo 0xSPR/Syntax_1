@@ -3,24 +3,25 @@
 
 int val = 1;
 char l = "c";
+string name = "Sergio";
 float x,y,z;
 string message = "Follow The Black Ferret";
 
 void main()
 {
-  printf("\nHola mundo");
+  printf("\nHola, ",name);
   printf("\nRadio = ");
   scanf("%i");
 
-  while()
+  while(x < z)
   {
-    printf("Hola");
+    printf("Hola", val);
   }
 
   do
   {
     printf("do");
-  }while();
+  }while(x<11);
 
   for (x = 0; x < 20;++i) // --i or i--
   {
@@ -28,6 +29,13 @@ void main()
   }
   if(z > 10)
   {
-    printf("if");
+    if(z > )
+    {
+
+    }else if(z > 6){
+
+    }else{
+
+    }
   }
 }
