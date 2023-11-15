@@ -1,13 +1,6 @@
 namespace Syntax_1;
 
 /*
-    Done: Printf -> printf(cadena(, Identificador)?);
-    Done: Scanf -> scanf(cadena,&Identificador);
-    Requerimiento 3: Agregar a la Asignacion +=, -=, *=. /=, %=
-                     Ejemplo:
-                     Identificador IncrementoTermino Expresion;
-                     Identificador IncrementoFactor Expresion;
-    Done: Agregar el else optativo al if
     Requerimiento 5: Indicar el número de linea de los errores
 */
 
@@ -109,7 +102,7 @@ public class Language : Syntax
     }
 
     //Delete - Lista_identificadores -> identificador (,Lista_identificadores)?
-    private void ListIdentifier()
+    /*private void ListIdentifier()
     {
         Match(Types.Identifier);
         if (GetContent() == ",")
@@ -117,7 +110,7 @@ public class Language : Syntax
             Match(",");
             ListIdentifier();
         }
-    }
+    }*/
 
     // Parameters
     public void Parameters()
@@ -214,7 +207,8 @@ public class Language : Syntax
         Match(")");
         Match(";");
     }
-    // Concatenation
+
+    //Concatenation
     private void Concatenation()
     {
         if(GetContent() == ",")
@@ -223,8 +217,31 @@ public class Language : Syntax
             Match(Types.Identifier);
         }
     }
+
+    // Assignment
     private void Assignment()
     {
+        Match(Types.Identifier);
+        if (GetClassification() == Types.TermOp)
+        {
+            Match(Types.TermOp);
+        }
+        else if (GetClassification() == Types.IncreaseTerm)
+        {
+            Match(Types.IncreaseTerm);
+            Expression();
+        }
+        else if (GetClassification() == Types.FactorIn)
+        {
+            Match(Types.FactorIn);
+            Expression();
+        }
+        else
+        {
+            Match("=");
+            Expression();
+        }
+        Match(";");
     }
 
     //While -> while(Condicion) bloque de instrucciones | instruccion
@@ -234,14 +251,28 @@ public class Language : Syntax
         Match("(");
         Condition();
         Match(")");
-        InstructionBlock();
+        if(GetContent() == "{")
+        {
+            InstructionBlock();
+        }
+        else
+        {
+            Instructions();
+        }
     }
 
     //Do -> do bloque de instrucciones | intruccion while(Condicion)
     private void Do()
     {
         Match("do");
-        InstructionBlock();
+        if(GetContent() == "{")
+        {
+            InstructionBlock();
+        }
+        else
+        {
+            Instructions();
+        }
         Match("while");
         Match("(");
         Condition();
@@ -249,7 +280,7 @@ public class Language : Syntax
         Match(";");
     }
 
-    //Testing - For -> for(Asignacion Condicion; Incremento) Bloque de instruccones | Intruccion
+    //For -> for(Asignacion Condicion; Incremento) Bloque de instruccones | Intruccion
     private void For()
     {
         Match("for");
@@ -270,9 +301,15 @@ public class Language : Syntax
         Match(";");
         Increase();
         Match(")");
-        InstructionBlock();
+        if(GetContent() == "{")
+        {
+            InstructionBlock();
+        }
+        else
+        {
+            Instructions();
+        }
     }
-    // foreach?
 
     //Incremento -> Identificador ++ | --
     private void Increase()
@@ -292,19 +329,27 @@ public class Language : Syntax
     //Condicion -> Expresion operador relacional Expresion
     private void Condition()
     {
-        Match(GetClassification() == Types.Identifier ? Types.Identifier : Types.Number);
+        Expression();
         Match(Types.RelationalOp);
-        Match(GetClassification() == Types.Identifier ? Types.Identifier : Types.Number);
+        Expression();
     }
 
-    //If -> if(Condicion) bloque de instrucciones (else bloque de instrucciones)?
+    //If -> if(Condicion) instruccion | bloque de instrucciones
+    // (else bloque de instrucciones)?
     private void If()
     {
         Match("if");
         Match("(");
         Condition();
         Match(")");
-        InstructionBlock();
+        if(GetContent() == "{")
+        {
+            InstructionBlock();
+        }
+        else
+        {
+            Instructions();
+        }
         if(GetContent() == "else")
         {
             Match("else");
@@ -314,34 +359,68 @@ public class Language : Syntax
             }
             else
             {
-                InstructionBlock();
+                if(GetContent() == "{")
+                {
+                    InstructionBlock();
+                }
+                else
+                {
+                    Instructions();
+                }
             }
         }
     }
 
-    //Expresion -> Termino MasTermino
+    //Expresion -> Termino Mas Termino
     private void Expression()
     {
-
+        Term();
+        PlusTerm();
     }
 
-    //MasTermino -> (OperadorTermino Termino)?
+    //MasTermino -> (Operador Termino Termino)?
     private void PlusTerm()
     {
+        if (GetClassification() == Types.TermOp)
+        {
+            Match(Types.TermOp);
+            Term();
+        }
     }
 
-    //Termino -> Factor PorFactor
+    //Termino -> Factor Por Factor
     private void Term()
     {
+        Factor();
+        ByFactor();
     }
 
-    //PorFactor -> (OperadorFactor Factor)?
+    //PorFactor -> (Operador Factor Factor)?
     private void ByFactor()
     {
+        if (GetClassification() == Types.FactorOp)
+        {
+            Match(Types.FactorOp);
+            Factor();
+        }
     }
 
-    //Factor -> numero | identificador | (Expresion)
+    //Factor - umero | identificador | (Expresion)
     private void Factor()
     {
+        if (GetClassification() == Types.Number)
+        {
+            Match(Types.Number);
+        }
+        else if (GetClassification() == Types.Identifier)
+        {
+            Match(Types.Identifier);
+        }
+        else
+        {
+            Match("(");
+            Expression();
+            Match(")");
+        }
     }
 }

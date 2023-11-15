@@ -20,7 +20,7 @@ public class Syntax : Lexic
         }
         else
         {
-            throw new Error(" Syntax: Waiting For " + wait, Log);
+            throw new Error("Syntax:"+" ["+Line+"]" + " Waiting For " + wait, Log);
         }
     }
     public void Match(Types wait)
@@ -31,7 +31,7 @@ public class Syntax : Lexic
         }
         else
         {
-            throw new Error("Syntax:"+" ["+line+"]" + " Waiting For "+ wait + ".");
+            throw new Error("Syntax:"+" ["+Line+"]" + " Waiting For "+ wait + ".");
         }
     }
 }

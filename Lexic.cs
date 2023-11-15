@@ -4,7 +4,7 @@ public class Lexic : Token, IDisposable
 {
     const int F = -1;
     const int E = -2;
-    public int line;
+    public int Line;
     private readonly StreamReader _file;
     protected StreamWriter Log;
 
@@ -54,7 +54,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader("test.cpp");
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
-        line = GetHashCode();
+        Line = 0;
     }
 
     public Lexic(string name)
@@ -62,7 +62,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader(name);
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
-        line = 1;
+        Line = 0;
     }
 
     public void Dispose()
@@ -166,6 +166,11 @@ public class Lexic : Token, IDisposable
 
             if (state >= 0)
             {
+                //Console.WriteLine(Convert.ToByte(c));
+                if(Convert.ToByte(c) == 10)
+                {
+                    Line += 1;
+                }
                 _file.Read();
                 if (state > 0)
                 {
