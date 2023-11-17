@@ -1,1 +1,2 @@
-# Proyecto Syntax_1 y Syntax_2
+# Proyecto LYA I
+## Syntax 1 y 2
