@@ -1,62 +1,52 @@
 #include <stdio.h>
-#include <math>
+#include <math.h>
 
-int val = 1;
-int k = 3;
-float x,y,z;
-
-char l = "c";
-string name = "Sergio";
-string message = "Follow The Black Ferret";
+int altura,i,j;
+float x,y;
 
 void main()
 {
+    y = 10;
+    x = 9;
+    x += (3 + 5) * 8 - (10 - 4) / 2;
+    x /= (y-3);
+    x --;
+    x *= (x-7);
 
-  printf("\nHola");
-  scanf("%i");
+    printf("\nValor de altura = ");
+    scanf("%d",altura); //&altura
 
-  x = (3 + 5)*8-(10-4)/2;
-  y %= 2;
-  z = (a+b)*c;
-
-  while(x < z)
-  {
-    printf("Hola",val);
-  }
-
-  do
-  {
-    printf("do");
-  }while(x<11);
-
-  for (x = 0; x < 20;++i) // --i or i--
-  {
-    printf("for");
-  }
-
-  if(z > 10)
-    scanf("hi");
-
-  if((3+5)*8 > z)
-  {
-    if(radio % 2 == 0)
+    for (i = 1; i<=altura; i++)
     {
-      do
-      {
-        printf("do");
-      }while((x*9+2)<11);
-    }else if(z > 6)
-    {
-      for (k = 0; k < 20;k++)
-      {
-        printf("for");
-      }
-    }else
-    {
-      while((y%2+4) > 10)
-      {
-        printf("Hola",val);
-      }
+        for (j = 1; j<=i; j++)
+        {
+            printf("",j);
+        }
+        printf("\n");
     }
-  }
+    i = 0;
+    do
+    {
+        printf("-");
+        i++;
+    }while (i<altura*2);
+    printf("\n");
+    for (i = 1; i<=altura; i++)
+    {
+        j = 1;
+        while (j<=i)
+        {
+            printf("",j);
+            j++;
+        }
+        printf("\n");
+    }
+    i = 0;
+    do
+    {
+      printf("-");
+      i++;
+    }
+    while (i<altura*2);
+    printf("\n");
 }

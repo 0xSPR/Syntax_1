@@ -6,11 +6,12 @@ public class Token
     {
         Identifier, Number, Character, Assignment, EndSentence, LogicalOp,
         RelationalOp, TermOp, IncreaseTerm, FactorOp, FactorIn, TernaryOp,
-        String, Start, End, DataTypes, Reserved, Loops, Structures
+        String, Start, End, DataTypes, Loops, Structures
     }
     private string _content;
     private Types _clasification;
     
+    // ReSharper disable once ConvertConstructorToMemberInitializers
     public Token()
     {
         _content = "";

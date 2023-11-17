@@ -54,7 +54,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader("test.cpp");
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
-        Line = 0;
+        Line = 1;
     }
 
     public Lexic(string name)
@@ -62,7 +62,7 @@ public class Lexic : Token, IDisposable
         _file = new StreamReader(name);
         Log = new StreamWriter("test.log");
         Log.AutoFlush = true;
-        Line = 0;
+        Line = 1;
     }
 
     public void Dispose()
@@ -166,33 +166,25 @@ public class Lexic : Token, IDisposable
 
             if (state >= 0)
             {
-                //Console.WriteLine(Convert.ToByte(c));
                 if(Convert.ToByte(c) == 10)
-                {
                     Line += 1;
-                }
+
                 _file.Read();
+
                 if (state > 0)
-                {
                     buffer += c;
-                }
                 else
-                {
                     buffer = "";
-                }
             }
         }
 
         if (state == E)
         {
             if (GetClassification() == Types.Number)
-            {
                 throw new Error("Lexico: Se espera un digito", Log);
-            }
+            
             if (GetClassification() == Types.String)
-            {
                 throw new Error("Lexico: Se espera un \"", Log);
-            }
         }
         else
         {

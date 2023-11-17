@@ -1,9 +1,5 @@
 namespace Syntax_1;
 
-/*
-    Requerimiento 5: Indicar el número de linea de los errores
-*/
-
 public class Language : Syntax
 {
     public Language()
@@ -31,6 +27,7 @@ public class Language : Syntax
             Match("include");
             Match("<");
             Match(Types.Identifier);
+
             if (GetContent() == ".")
             {
                 Match(".");
@@ -38,7 +35,6 @@ public class Language : Syntax
             }
 
             Match(">");
-
             Library();
         }
     }
@@ -53,7 +49,7 @@ public class Language : Syntax
             Match(Types.DataTypes);
             Match(Types.Identifier);
 
-            if(GetContent() == ",")
+            if (GetContent() == ",")
             {
                 while (GetClassification() == Types.Identifier || GetContent() == ",")
                 {
@@ -61,6 +57,7 @@ public class Language : Syntax
                     Match(Types.Identifier);
                 }
             }
+
             if (GetContent() == "=")
 
             {
@@ -83,8 +80,8 @@ public class Language : Syntax
                         break;
                 }
             }
-            Match(";");
 
+            Match(";");
             Variable();
         }
     }
@@ -96,27 +93,17 @@ public class Language : Syntax
         {
             Match("void");
             Match("main");
+
             Parameters();
             InstructionBlock();
         }
     }
 
-    //Delete - Lista_identificadores -> identificador (,Lista_identificadores)?
-    /*private void ListIdentifier()
-    {
-        Match(Types.Identifier);
-        if (GetContent() == ",")
-        {
-            Match(",");
-            ListIdentifier();
-        }
-    }*/
-
     // Parameters
     public void Parameters()
     {
         Match("(");
-        if(GetClassification() == Types.DataTypes)
+        if (GetClassification() == Types.DataTypes)
         {
             Match(Types.DataTypes);
             Match(Types.Identifier);
@@ -128,6 +115,7 @@ public class Language : Syntax
                 Match(Types.Identifier);
             }
         }
+
         Match(")");
     }
 
@@ -135,10 +123,9 @@ public class Language : Syntax
     public void InstructionBlock()
     {
         Match("{");
+
         if (GetContent() != "}")
-        {
             InstructionList();
-        }
 
         Match("}");
     }
@@ -147,43 +134,28 @@ public class Language : Syntax
     private void InstructionList()
     {
         Instructions();
+
         if (GetContent() != "}")
-        {
             InstructionList();
-        }
     }
 
     //Instruccion -> Printf | Scanf | If | While | do while | For | Asignacion
     private void Instructions()
     {
         if (GetContent() == "printf")
-        {
             Printf();
-        }
         else if (GetContent() == "scanf")
-        {
             Scanf();
-        }
         else if (GetContent() == "if")
-        {
             If();
-        }
         else if (GetContent() == "while")
-        {
             While();
-        }
         else if (GetContent() == "do")
-        {
             Do();
-        }
         else if (GetContent() == "for")
-        {
             For();
-        }
         else
-        {
             Assignment();
-        }
     }
 
     //Printf -> printf(cadena);
@@ -211,25 +183,24 @@ public class Language : Syntax
     //Concatenation
     private void Concatenation()
     {
-        if(GetContent() == ",")
+        if (GetContent() == ",")
         {
             Match(",");
             Match(Types.Identifier);
         }
     }
 
-    // Assignment
+    // //Assignment -> Identificador (++ | --) | (= Expresion);
     private void Assignment()
     {
         Match(Types.Identifier);
-        if (GetClassification() == Types.TermOp)
-        {
-            Match(Types.TermOp);
-        }
-        else if (GetClassification() == Types.IncreaseTerm)
+        
+        if (GetClassification() == Types.IncreaseTerm)
         {
             Match(Types.IncreaseTerm);
-            Expression();
+
+            if(GetContent() == "(")
+                Expression();
         }
         else if (GetClassification() == Types.FactorIn)
         {
@@ -241,6 +212,7 @@ public class Language : Syntax
             Match("=");
             Expression();
         }
+
         Match(";");
     }
 
@@ -251,28 +223,23 @@ public class Language : Syntax
         Match("(");
         Condition();
         Match(")");
-        if(GetContent() == "{")
-        {
+
+        if (GetContent() == "{")
             InstructionBlock();
-        }
         else
-        {
             Instructions();
-        }
     }
 
     //Do -> do bloque de instrucciones | intruccion while(Condicion)
     private void Do()
     {
         Match("do");
-        if(GetContent() == "{")
-        {
+
+        if (GetContent() == "{")
             InstructionBlock();
-        }
         else
-        {
             Instructions();
-        }
+
         Match("while");
         Match("(");
         Condition();
@@ -285,36 +252,32 @@ public class Language : Syntax
     {
         Match("for");
         Match("(");
-        // Under Test
-        if(GetClassification() == Types.DataTypes)
-        {
+
+        if (GetClassification() == Types.DataTypes)
             Variable();
-        }
         else
         {
             Match(Types.Identifier);
             Match("=");
             Match(Types.Number);
         }
+
         Match(";");
         Condition();
         Match(";");
         Increase();
         Match(")");
-        if(GetContent() == "{")
-        {
+
+        if (GetContent() == "{")
             InstructionBlock();
-        }
         else
-        {
             Instructions();
-        }
     }
 
     //Incremento -> Identificador ++ | --
     private void Increase()
     {
-        if(GetClassification() == Types.Identifier)
+        if (GetClassification() == Types.Identifier)
         {
             Match(Types.Identifier);
             Match(Types.IncreaseTerm);
@@ -342,32 +305,17 @@ public class Language : Syntax
         Match("(");
         Condition();
         Match(")");
-        if(GetContent() == "{")
-        {
+        if (GetContent() == "{")
             InstructionBlock();
-        }
         else
-        {
             Instructions();
-        }
-        if(GetContent() == "else")
+
+        if (GetContent() == "else")
         {
-            Match("else");
-            if(GetContent() == "if")
-            {
-                If();
-            }
+            if (GetContent() == "{")
+                InstructionBlock();
             else
-            {
-                if(GetContent() == "{")
-                {
-                    InstructionBlock();
-                }
-                else
-                {
-                    Instructions();
-                }
-            }
+                Instructions();
         }
     }
 
@@ -387,7 +335,6 @@ public class Language : Syntax
             Term();
         }
     }
-
     //Termino -> Factor Por Factor
     private void Term()
     {
@@ -405,17 +352,13 @@ public class Language : Syntax
         }
     }
 
-    //Factor - umero | identificador | (Expresion)
+    //Factor - numero | identificador | (Expresion)
     private void Factor()
     {
         if (GetClassification() == Types.Number)
-        {
             Match(Types.Number);
-        }
         else if (GetClassification() == Types.Identifier)
-        {
             Match(Types.Identifier);
-        }
         else
         {
             Match("(");
