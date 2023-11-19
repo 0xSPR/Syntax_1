@@ -164,7 +164,7 @@ public class Language : Syntax
         Match("printf");
         Match("(");
         Match(Types.String);
-        Concatenation();
+        Concatenation(false);
         Match(")");
         Match(";");
     }
@@ -175,17 +175,22 @@ public class Language : Syntax
         Match("scanf");
         Match("(");
         Match(Types.String);
-        Concatenation();
+        Concatenation(true);
         Match(")");
         Match(";");
     }
 
     //Concatenation
-    private void Concatenation()
+    private void Concatenation(bool flag)
     {
         if (GetContent() == ",")
         {
             Match(",");
+
+            if(flag)
+                if(GetContent() == "&")
+                    Match("&");
+            
             Match(Types.Identifier);
         }
     }

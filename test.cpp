@@ -14,7 +14,7 @@ void main()
     x *= (x-7);
 
     printf("\nValor de altura = ");
-    scanf("%d",altura); //&altura
+    scanf("%d",&altura); //&altura
 
     for (i = 1; i<=altura; i++)
     {

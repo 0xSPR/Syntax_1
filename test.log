@@ -83,6 +83,7 @@ scanf = Identifier
 ( = Character
 "%d" = String
 , = Character
+& = Character
 altura = Identifier
 ) = Character
 ; = EndSentence
